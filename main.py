@@ -1,22 +1,10 @@
-from flask import Flask, request, make_response, jsonify, send_from_directory
-from flask.templating import render_template
+from flask import Flask, make_response, jsonify, send_from_directory, render_template
 
 app = Flask(__name__)
 
-@app.route('/', methods=['M-SEARCH', 'GET'])
+@app.route('/')
 def index():
-    if request.method == 'GET':
-        return render_template('roku.html')
-
-    if request.method == 'M-SEARCH':
-        if request.headers.get('Man') == "\"ssdp:discover\"" and request.headers.get('ST') == "roku:ecp":
-            res = make_response("200")
-            res.headers['Cache-Control'] = "max-age=3600"
-            res.headers['ST'] = "roku:ecp"
-            res.headers['Location'] = "http://192.168.0.3:1900"
-            res.headers['USN'] = "uuid:roku:ecp:SOMEUSN"
-            print(res.headers)
-            return res
+    return render_template('roku.html')
 
 @app.route('/script')
 def script():
